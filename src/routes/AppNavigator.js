@@ -32,7 +32,7 @@ const TabNavigator = () => (
   <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
     <Screen name="Emission" component={EmissionScreen} />
     <Screen name="Achieve" component={AchieveScreen} />
-    <Screen name="Vote" component={AchieveScreen} />
+    <Screen name="Vote" component={VoteScreen} />
     <Screen name="Home" component={HomeScreen} />
   </Navigator>
 );
