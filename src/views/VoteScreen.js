@@ -1,79 +1,81 @@
 import React from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleSheet, ScrollView, TouchableOpacity, View } from "react-native";
 import { Layout, Text } from "@ui-kitten/components";
 // import CarbonMap from "../components/CarbonMap";
 
-const CardTextHeader = ({ title, value }) => (
-  <View style={styles.CarbonCardHeaderBox}>
-    <Text style={styles.cardHeaderText}>{title}</Text>
-    <Text style={styles.cardHeaderValue}>{value}</Text>
+const HistoryPercItem = ({ title, perc }) => (
+  <View style={styles.historyItemBox}>
+    <Text style={styles.historyInfoText}>{title}</Text>
+    <Text style={styles.historyInfoValue}>{perc}</Text>
   </View>
 );
 
-const VotingPowerCard = ({ power }) => (
-  <View style={styles.CarbonCardBox}>
-    <CardTextHeader title={"Your Voting Power"} value={power} />
-  </View>
-);
-
-const CarbonInfoItem = ({ title, perc }) => (
-  <View style={styles.CarbonInfoItemBox}>
-    <Text style={styles.cardInfoText}>{title}</Text>
-    <View style={styles.cardHeaderValueBox}>
-      <Text style={styles.cardInfoValue}>{perc}</Text>
+const HistoryItem = ({ date, perc1, perc2, perc3, perc4 }) => (
+  <View style={styles.historyBox}>
+    <Text style={styles.historyDateText}>{date}</Text>
+    <View style={{ width: "80%" }}>
+      <HistoryPercItem title={"Personal carbon credit"} perc={perc1} />
+      <HistoryPercItem title={"Personal improvement"} perc={perc2} />
+      <HistoryPercItem title={"Among all participants"} perc={perc3} />
+      <HistoryPercItem title={"Among profile"} perc={perc4} />
     </View>
   </View>
 );
 
-const CarbonCraditCard = ({ credit, perc1, perc2, perc3 }) => (
-  <View style={styles.CarbonCardBox}>
-    <CardTextHeader title={"Your Carbon Credit"} value={credit} />
-    <CarbonInfoItem title={"Personal improvement"} perc={perc1} />
-    <CarbonInfoItem title={"Among all participants"} perc={perc2} />
-    <CarbonInfoItem title={"Among profile"} perc={perc3} />
-  </View>
-);
-
-const VotingHintText = ({ remain }) => (
-  <View>
-    <Text style={styles.votingHintText}>
-      Please distribute your votes to the items.
-    </Text>
-    <Text style={styles.votingHintText}>Remaning votes: {remain}</Text>
-  </View>
-);
-
-const VotingItem = ({ index, title }) => (
-  <View style={styles.votingBox}>
-    <Text style={styles.votingText}>
-      {index}. {title}
-    </Text>
-    <TextInput style={styles.votingInput} maxLength={2} />
+const DateText = ({ date, countdown }) => (
+  <View style={styles.flexBox}>
+    <Text style={styles.dateText}>{date}</Text>
+    <Text style={styles.countdownText}>{countdown} days</Text>
   </View>
 );
 
 const VotingButtom = () => (
-  <TouchableOpacity style={styles.submitButton} activeOpacity={0.8}>
-    <Text style={styles.submitButtonText}>Submit</Text>
+  <TouchableOpacity style={styles.voteButton} activeOpacity={0.8}>
+    <Text style={styles.voteButtonText}>Vote</Text>
   </TouchableOpacity>
+);
+
+const PolicyHistory = () => (
+  <View style={styles.historyHeaderBox}>
+    <Text style={styles.historyHeaderText}> Policy history </Text>
+  </View>
 );
 
 const VoteScreen = () => (
   <Layout style={styles.screenLayout}>
-    <View style={styles.flexBox}>
-      <VotingPowerCard power={3} />
-      <CarbonCraditCard credit={10} perc1={"+2"} perc2={"10%"} perc3={"5%"} />
-    </View>
-
-    <VotingHintText remain={100} />
-    <View style={styles.flexBox}>
-      <VotingItem index={1} title={"Personal Carbon Credit"} />
-      <VotingItem index={2} title={"Personal Improvement"} />
-      <VotingItem index={3} title={"Among All Participants"} />
-      <VotingItem index={4} title={"Among Profile"} />
-      <VotingButtom />
-    </View>
-
+    <DateText date={"Apr 12"} countdown={0} />
+    <VotingButtom />
+    <PolicyHistory />
+    <ScrollView style={{ width: "100%" }}>
+      <HistoryItem
+        date={"29 Mar"}
+        perc1={"10%"}
+        perc2={"50%"}
+        perc3={"20%"}
+        perc4={"30%"}
+      />
+      <HistoryItem
+        date={"15 Mar"}
+        perc1={"20%"}
+        perc2={"20%"}
+        perc3={"40%"}
+        perc4={"20%"}
+      />
+      <HistoryItem
+        date={"1 Mar"}
+        perc1={"10%"}
+        perc2={"50%"}
+        perc3={"20%"}
+        perc4={"30%"}
+      />
+      <HistoryItem
+        date={"18 Feb"}
+        perc1={"20%"}
+        perc2={"20%"}
+        perc3={"40%"}
+        perc4={"20%"}
+      />
+    </ScrollView>
   </Layout>
 );
 
@@ -83,46 +85,46 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   screenLayout: {
-    flex:1,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
   },
-  votingBox: {
-    marginTop: 10,
-    height: 40,
-    width: "75%",
+  dateText: {
+    marginTop: 50,
+    fontFamily: "Helvetica",
+    fontStyle: "normal",
+    fontWeight: "700",
+    fontSize: 32,
+    lineHeight: 56,
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-  },
-  votingInput: {
-    padding: 0,
-    width: 55,
-    height: 27,
-    backgroundColor: "#F7F7F7",
-    borderRadius: 15,
     textAlign: "center",
-    fontFamily: "Helvetica",
-    fontStyle: "normal",
-    fontWeight: "700",
+    letterSpacing: "-0.022em",
+    color: "#000000",
   },
-  votingText: {
+  countdownText: {
     fontFamily: "Helvetica",
-    fontStyle: "normal",
-    fontWeight: "700",
-    fontSize: 16,
+    fontStyle: "italic",
+    fontWeight: "400",
+    fontSize: 24,
+    // lineHeight: 56,
+    display: "flex",
+    alignItems: "center",
+    textAlign: "center",
+    letterSpacing: "-0.022em",
+    color: "#5F646D",
   },
-  submitButton: {
+  voteButton: {
     marginTop: 35,
-    width: 331,
+    width: 145,
     height: 50,
     backgroundColor: "#000000",
     borderRadius: 30,
     alignItems: "center",
+    marginBottom: 50,
   },
-  submitButtonText: {
+  voteButtonText: {
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "700",
@@ -132,78 +134,58 @@ const styles = StyleSheet.create({
     letterSpacing: "-0.022em",
     color: "#FFFFFF",
   },
-  votingHintText: {
-    textAlign: "center",
-    fontFamily: "Helvetica",
-    fontStyle: "normal",
-    fontWeight: "400",
-    fontSize: 14,
-    lineHeight: 28,
-    letterSpacing: "-0.022em",
-    color: "#333333",
-  },
-  cardHeaderText: {
+  historyHeaderText: {
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "700",
     fontSize: 20,
-    lineHeight: 30,
-    letterSpacing: "-0.022em",
-    color: "#000000",
-  },
-  cardHeaderValue: {
-    fontFamily: "Helvetica",
-    fontStyle: "normal",
-    fontWeight: "700",
-    fontSize: 36,
     lineHeight: 56,
     letterSpacing: "-0.022em",
     color: "#000000",
   },
-  cardInfoText: {
+  historyInfoText: {
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "400",
     fontSize: 14,
     lineHeight: 28,
-    color: "rgba(0, 0, 0, 0.7)",
+    color: "rgba(51, 51, 51, 0.7)",
   },
-  cardInfoValue: {
+  historyInfoValue: {
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "700",
     fontSize: 14,
     lineHeight: 28,
-    color: "rgba(0, 0, 0, 0.7)",
+    color: "#333333",
   },
-  CarbonCardBox: {
+  historyItemBox: {
+    paddingLeft: 30,
+    paddingRight: 25,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  historyBox: {
+    marginTop: 10,
+    marginLeft: "7%",
     width: "85%",
     display: "flex",
-    borderRadius: 30,
-    backgroundColor: "#F7F7F7",
-    paddingBottom: 12,
-    marginBottom: 10,
-  },
-  CarbonCardHeaderBox: {
-    paddingTop: 10,
-    paddingLeft: 20,
-    paddingRight: 50,
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    marginBottom: 30,
   },
-  CarbonInfoItemBox: {
-    paddingLeft: 40,
-    paddingRight: 45,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  historyDateText: {
+    fontFamily: "Helvetica",
+    fontStyle: "normal",
+    fontWeight: "700",
+    fontSize: 18,
+    lineHeight: 20,
+    color: "#333333",
   },
-  cardHeaderValueBox: {
-    alignItems: "left",
-    width: 40,
+  historyHeaderBox: {
+    width: "90%",
   },
 });
 
