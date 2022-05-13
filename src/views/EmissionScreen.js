@@ -1,79 +1,125 @@
-import React from "react";
-import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import { Layout, Text } from "@ui-kitten/components";
+import React,{Fragment} from "react";
+import { StyleSheet, Image} from "react-native";
+import { Layout, Text, Divider } from "@ui-kitten/components";
 // import CarbonMap from "../components/CarbonMap";
 import { View } from "react-native-web";
 
-const VotingItem = ({ index, title }) => (
-  <View style={styles.votingBox}>
-    <Text style={styles.votingText}>
-      {index}. {title}
-    </Text>
-    <TextInput style={styles.votingInput} maxLength={2} />
-  </View>
-);
+const DATA = [
+  {
+    id: 1,
+    title: 'Personal',
+    description: 'compare to last round',
+    figure:'1'
+  },
+  {
+    id: 2,
+    title: 'Among all',
+    description: 'compare to all participants',
+    figure:'15%'
+  },
+  {
+    id: 3,
+    title: 'Among profile',
+    description: 'compare to young professionals',
+    figure:'50%'
+  }
+];
 
-const VotingButtom = () => (
-  <TouchableOpacity style={styles.submitButton} activeOpacity={0.8}>
-    <Text style={styles.submitButtonText}>Submit</Text>
-  </TouchableOpacity>
-);
 
 const EmissionScreen = () => (
   <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <Text category="h1">EmissionScreen2</Text>
-    <VotingItem index={1} title={"Personal Carbon Credit"} />
-    <VotingItem index={2} title={"Personal Improvement"} />
-    <VotingItem index={3} title={"Among All Participants"} />
-    <VotingItem index={4} title={"Among Profile"} />
-    <VotingButtom />
+    <Text category="h1">Performance</Text>
+    <View style={styles.Container}>
+      <Image style={styles.VisCycle} source={require('../components/performance.png')}/>
+    </View>
+
+    <View style={styles.Container}>
+      {DATA.map(({id, title, description, figure}) => (
+        <Fragment key={id}>
+          <Divider/>
+          {/* <View style={styles.separator}></View> */}
+          <View style={styles.ColumnContainer}>
+            <View style={styles.RowContainer}>
+              <Text style={styles.title}>{title} </Text>
+              <Image style={styles.icon} source={require('../components/icon.png')}/>
+              <Text style={styles.figure}>{figure} </Text>
+            </View>            
+            <Text style={styles.description}>{description} </Text>
+          </View>
+          <Divider/>
+        </Fragment>
+      ))}
+    </View>
   </Layout>
 );
 
+
 const styles = StyleSheet.create({
-  votingBox: {
+  Container: {
     marginTop: 10,
-    height: 40,
-    width: "75%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    paddingHorizontal: 10,
   },
-  votingInput: {
-    padding: 0,
-    width: 55,
-    height: 27,
-    backgroundColor: "#F7F7F7",
-    borderRadius: 15,
-    textAlign: "center",
-    fontFamily: "Helvetica",
+  VisCycle: {
+    width: 300,
+    height: 300,
+  },
+    
+  ColumnContainer:{
+    width: "100%",
+    flexWrap: 'wrap', 
+    flexDirection: 'column',
+    marginVertical: 20,
+  },
+
+  RowContainer: {
+    marginVertical: 12,
+    height: 20,
+    width: 330,
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  title: {
+    flex: 6,
+    fontFamily: "Source Sans Pro",
     fontStyle: "normal",
-    fontWeight: "700",
-  },
-  votingText: {
-    fontFamily: "Helvetica",
-    fontStyle: "normal",
-    fontWeight: "700",
-    fontSize: 16,
-  },
-  submitButton: {
-    marginTop: 35,
-    width: 331,
-    height: 50,
-    backgroundColor: "#000000",
-    borderRadius: 30,
-    alignItems: "center",
-  },
-  submitButtonText: {
-    fontFamily: "Helvetica",
-    fontStyle: "normal",
-    fontWeight: "700",
+    fontWeight: "600",
     fontSize: 20,
-    lineHeight: 50,
-    textAlign: "center",
-    letterSpacing: "-0.022em",
-    color: "#FFFFFF",
+    lineHeight: 14,
+    display: "flex",
+    color: "#000000"
+  },
+  icon: {
+    justifyContent: "center", 
+    width: 12,
+    height: 12,
+    marginRight:10
+  },
+  
+  figure: {
+    flex: 1,
+    textAlign:'right',
+    fontFamily: "Source Sans Pro",
+    fontStyle: "normal",
+    fontWeight: "600",
+    fontSize: 20,
+    lineHeight: 14,
+    color: "#000000"
+  },
+  description: {
+    // paddingVertical: 10,
+    fontFamily: "Source Sans Pro",
+    fontStyle: "normal",
+    fontWeight: "600",
+    fontSize: 16,
+    lineHeight: 14,
+    display: "flex",
+    color: "#979797"
+  },
+  separator: {
+    marginVertical: 20,
+    borderBottomColor:'#979797',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });
 
