@@ -1,58 +1,59 @@
-import React,{Fragment} from "react";
-import { StyleSheet, Image} from "react-native";
+import React, { Fragment } from "react";
+import { StyleSheet, Image } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
-// import CarbonMap from "../components/CarbonMap";
 import { View } from "react-native-web";
 
 const DATA = [
   {
     id: 1,
-    title: 'Personal',
-    description: 'compare to last round',
-    figure:'1'
+    title: "Personal",
+    description: "compare to last round",
+    figure: "1",
   },
   {
     id: 2,
-    title: 'Among all',
-    description: 'compare to all participants',
-    figure:'15%'
+    title: "Among all",
+    description: "compare to all participants",
+    figure: "15%",
   },
   {
     id: 3,
-    title: 'Among profile',
-    description: 'compare to young professionals',
-    figure:'50%'
-  }
+    title: "Among profile",
+    description: "compare to young professionals",
+    figure: "50%",
+  },
 ];
 
-
 const EmissionScreen = () => (
-  <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <Text category="h1">Performance</Text>
+  <Layout style={styles.screenLayout}>
     <View style={styles.Container}>
-      <Image style={styles.VisCycle} source={require('../components/performance.png')}/>
+      <Image
+        style={styles.VisCycle}
+        source={require("../components/performance.png")}
+      />
     </View>
 
     <View style={styles.Container}>
-      {DATA.map(({id, title, description, figure}) => (
+      {DATA.map(({ id, title, description, figure }) => (
         <Fragment key={id}>
-          <Divider/>
-          {/* <View style={styles.separator}></View> */}
+          <Divider />
           <View style={styles.ColumnContainer}>
             <View style={styles.RowContainer}>
               <Text style={styles.title}>{title} </Text>
-              <Image style={styles.icon} source={require('../components/icon.png')}/>
+              <Image
+                style={styles.icon}
+                source={require("../components/icon.png")}
+              />
               <Text style={styles.figure}>{figure} </Text>
-            </View>            
+            </View>
             <Text style={styles.description}>{description} </Text>
           </View>
-          <Divider/>
         </Fragment>
       ))}
+      <Divider />
     </View>
   </Layout>
 );
-
 
 const styles = StyleSheet.create({
   Container: {
@@ -63,11 +64,16 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
   },
-    
-  ColumnContainer:{
+  screenLayout: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  ColumnContainer: {
     width: "100%",
-    flexWrap: 'wrap', 
-    flexDirection: 'column',
+    flexWrap: "wrap",
+    flexDirection: "column",
     marginVertical: 20,
   },
 
@@ -75,50 +81,50 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     height: 20,
     width: 330,
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   title: {
     flex: 6,
-    fontFamily: "Source Sans Pro",
+    fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: 20,
     lineHeight: 14,
     display: "flex",
-    color: "#000000"
+    color: "#000000",
   },
   icon: {
-    justifyContent: "center", 
+    justifyContent: "center",
     width: 12,
     height: 12,
-    marginRight:10
+    marginRight: 10,
   },
-  
+
   figure: {
     flex: 1,
-    textAlign:'right',
-    fontFamily: "Source Sans Pro",
+    textAlign: "right",
+    fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: 20,
     lineHeight: 14,
-    color: "#000000"
+    color: "#000000",
   },
   description: {
     // paddingVertical: 10,
-    fontFamily: "Source Sans Pro",
+    fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: 16,
     lineHeight: 14,
     display: "flex",
-    color: "#979797"
+    color: "#979797",
   },
   separator: {
     marginVertical: 20,
-    borderBottomColor:'#979797',
+    borderBottomColor: "#979797",
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });
