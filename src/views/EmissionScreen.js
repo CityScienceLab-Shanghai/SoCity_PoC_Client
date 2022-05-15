@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, View } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
-import { View } from "react-native-web";
 
 const DATA = [
   {
