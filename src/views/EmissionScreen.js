@@ -8,21 +8,33 @@ const DATA = [
     id: 1,
     title: "Personal",
     description: "compare to last round",
-    figure: "1",
+    value: "1",
   },
   {
     id: 2,
     title: "Among all",
     description: "compare to all participants",
-    figure: "15%",
+    value: "15%",
   },
   {
     id: 3,
     title: "Among profile",
     description: "compare to young professionals",
-    figure: "50%",
+    value: "50%",
   },
 ];
+
+const RedTriangle = () => (
+  <svg
+    width="12"
+    height="9"
+    viewBox="0 0 12 9"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M6 9L11.1962 0H0.803848L6 9Z" fill="#D75A5A" />
+  </svg>
+);
 
 const EmissionScreen = () => (
   <Layout style={styles.screenLayout}>
@@ -34,17 +46,16 @@ const EmissionScreen = () => (
     </View>
 
     <View style={styles.Container}>
-      {DATA.map(({ id, title, description, figure }) => (
+      {DATA.map(({ id, title, description, value }) => (
         <Fragment key={id}>
           <Divider />
           <View style={styles.ColumnContainer}>
             <View style={styles.RowContainer}>
               <Text style={styles.title}>{title} </Text>
-              <Image
-                style={styles.icon}
-                source={require("../components/icon.png")}
-              />
-              <Text style={styles.figure}>{figure} </Text>
+              <View style={styles.valueBox}>
+                <RedTriangle />
+                <Text style={styles.value}>{value} </Text>
+              </View>
             </View>
             <Text style={styles.description}>{description} </Text>
           </View>
@@ -85,6 +96,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  valueBox:{
+    flexDirection: "row",
+    width:70,
+  },
   title: {
     flex: 6,
     fontFamily: "Helvetica",
@@ -102,9 +117,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
 
-  figure: {
+  value: {
     flex: 1,
-    textAlign: "right",
+    marginLeft:8,
+    textAlign: "left",
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "600",
