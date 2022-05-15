@@ -46,7 +46,7 @@ const VoteScreen = () => (
     <DateText date={"Apr 12"} countdown={0} />
     <VotingButtom />
     <PolicyHistory />
-    <ScrollView style={{ width: "100%" }}>
+    <ScrollView style={{ width: "100%" }} bounces={true}>
       <HistoryItem
         date={"29 Mar"}
         perc1={"10%"}
