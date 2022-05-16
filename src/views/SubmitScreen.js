@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { Layout, Text } from "@ui-kitten/components";
 
@@ -34,7 +34,7 @@ const CarbonCraditCard = ({ credit, perc1, perc2, perc3 }) => (
 );
 
 const VotingHintText = ({ remain }) => (
-  <View style={{marginTop:20}}>
+  <View style={{ marginTop: 20 }}>
     <Text style={styles.votingHintText}>
       Please distribute your votes to the items.
     </Text>
@@ -42,43 +42,71 @@ const VotingHintText = ({ remain }) => (
   </View>
 );
 
-const VotingItem = ({ index, title }) => (
+const VotingItem = ({ index, title, updateWeights }) => (
   <View style={styles.votingBox}>
     <Text style={styles.votingText}>
       {index}. {title}
     </Text>
-    <TextInput style={styles.votingInput} maxLength={2} />
+    <TextInput
+      style={styles.votingInput}
+      maxLength={2}
+      onChangeText={(text) => updateWeights(index, Number(text))}
+    />
   </View>
 );
 
-const VotingButtom = ({ navigation }) => (
+const VotingButtom = ({ navigation, sum }) => (
   <TouchableOpacity
     style={styles.submitButton}
     activeOpacity={0.8}
-    onPress={() => navigation.navigate("Vote")}
+    onPress={() => (sum ? navigation.navigate("Vote") : null)}
   >
     <Text style={styles.submitButtonText}>Submit</Text>
   </TouchableOpacity>
 );
 
-const SubmitScreen = ({ navigation }) => (
-  <Layout style={styles.screenLayout}>
-    <View style={{marginTop:10}}/>
-    <View style={styles.flexBox}>
-      <VotingPowerCard power={3} />
-      <CarbonCraditCard credit={10} perc1={"+2"} perc2={"10%"} perc3={"5%"} />
-    </View>
+const SubmitScreen = ({ navigation }) => {
+  const [weights, setWeights] = useState({ 1: 0, 2: 0, 3: 0, 4: 0 });
+  const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
+  const updateWeights = (index, value) => {
+    setWeights((weights) => ({ ...weights, [index]: value }));
+  };
+  console.log(weights);
+  return (
+    <Layout style={styles.screenLayout}>
+      <View style={{ marginTop: 10 }} />
+      <View style={styles.flexBox}>
+        <VotingPowerCard power={3} />
+        <CarbonCraditCard credit={10} perc1={"+2"} perc2={"10%"} perc3={"5%"} />
+      </View>
 
-    <VotingHintText remain={100} />
-    <View style={styles.flexBox}>
-      <VotingItem index={1} title={"Personal Carbon Credit"} />
-      <VotingItem index={2} title={"Personal Improvement"} />
-      <VotingItem index={3} title={"Among All Participants"} />
-      <VotingItem index={4} title={"Among Profile"} />
-      <VotingButtom navigation={navigation} />
-    </View>
-  </Layout>
-);
+      <VotingHintText remain={100 - sumValues(weights)} />
+      <View style={styles.flexBox}>
+        <VotingItem
+          index={1}
+          title={"Personal Carbon Credit"}
+          updateWeights={updateWeights}
+        />
+        <VotingItem
+          index={2}
+          title={"Personal Improvement"}
+          updateWeights={updateWeights}
+        />
+        <VotingItem
+          index={3}
+          title={"Among All Participants"}
+          updateWeights={updateWeights}
+        />
+        <VotingItem
+          index={4}
+          title={"Among Profile"}
+          updateWeights={updateWeights}
+        />
+        <VotingButtom navigation={navigation} sum={sumValues(weights)} />
+      </View>
+    </Layout>
+  );
+};
 
 const styles = StyleSheet.create({
   flexBox: {
