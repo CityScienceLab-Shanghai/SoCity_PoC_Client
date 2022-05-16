@@ -1,40 +1,68 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-  BottomNavigation,
-  BottomNavigationTab,
-  Layout,
-  Text,
-  Button,
-  ApplicationProvider,
-} from "@ui-kitten/components";
 import EmissionScreen from "../views/EmissionScreen";
-import AchieveScreen from "../views/AchieveScreen"; 
+import AchieveScreen from "../views/AchieveScreen";
 import HomeScreen from "../views/HomeScreen";
-import VoteScreen from "../views/VoteScreen"; 
+import VoteNavigator from "./VoteNavigator";
+import {TabIcon1, TabIcon2, TabIcon3, TabIcon4} from "../components/TabIcon";
 
-const { Navigator, Screen } = createBottomTabNavigator();
-
-const BottomTabBar = ({ navigation, state }) => (
-  <BottomNavigation
-    selectedIndex={state.index}
-    onSelect={(index) => navigation.navigate(state.routeNames[index])}
-  >
-    <BottomNavigationTab title="Emission" />
-    <BottomNavigationTab title="Achieve" />
-    <BottomNavigationTab title="Vote" />
-    <BottomNavigationTab title="Home" />
-  </BottomNavigation>
-);
+const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => (
-  <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
-    <Screen name="Emission" component={EmissionScreen} />
-    <Screen name="Achieve" component={AchieveScreen} />
-    <Screen name="Vote" component={VoteScreen} />
-    <Screen name="Home" component={HomeScreen} />
-  </Navigator>
+  <Tab.Navigator
+    screenOptions={{
+      tabBarStyle: {
+        paddingTop: 10,
+        paddingBottom: 25,
+        height:85,
+        shadowOffset: {
+          width: 0,
+          height: -1,
+        },
+        shadowRadius: 3,
+        shadowColor: "rgba(48, 48, 48, 0.0591947)",
+        shadowOpacity: 1,
+      },
+    }}
+  >
+    <Tab.Screen
+      name="Emission"
+      component={EmissionScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: "",
+        tabBarIcon: ({ focused }) => <TabIcon1 focused={focused} />,
+      }}
+    />
+    <Tab.Screen
+      name="Achieve"
+      component={AchieveScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: "",
+        tabBarIcon: ({ focused }) => <TabIcon2 focused={focused} />,
+      }}
+    />
+    <Tab.Screen
+      name="Vote"
+      component={VoteNavigator}
+      options={{
+        headerShown: false,
+        tabBarLabel: "",
+        tabBarIcon: ({ focused }) => <TabIcon3 focused={focused} />,
+      }}
+    />
+    <Tab.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: "",
+        tabBarIcon: ({ focused }) => <TabIcon4 focused={focused} />,
+      }}
+    />
+  </Tab.Navigator>
 );
 
 const AppNavigator = () => (

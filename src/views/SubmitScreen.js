@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { Layout, Text } from "@ui-kitten/components";
-// import CarbonMap from "../components/CarbonMap";
 
 const CardTextHeader = ({ title, value }) => (
   <View style={styles.CarbonCardHeaderBox}>
@@ -35,7 +34,7 @@ const CarbonCraditCard = ({ credit, perc1, perc2, perc3 }) => (
 );
 
 const VotingHintText = ({ remain }) => (
-  <View>
+  <View style={{marginTop:20}}>
     <Text style={styles.votingHintText}>
       Please distribute your votes to the items.
     </Text>
@@ -52,14 +51,19 @@ const VotingItem = ({ index, title }) => (
   </View>
 );
 
-const VotingButtom = () => (
-  <TouchableOpacity style={styles.submitButton} activeOpacity={0.8}>
+const VotingButtom = ({ navigation }) => (
+  <TouchableOpacity
+    style={styles.submitButton}
+    activeOpacity={0.8}
+    onPress={() => navigation.navigate("Vote")}
+  >
     <Text style={styles.submitButtonText}>Submit</Text>
   </TouchableOpacity>
 );
 
-const SubmitScreen = () => (
+const SubmitScreen = ({ navigation }) => (
   <Layout style={styles.screenLayout}>
+    <View style={{marginTop:10}}/>
     <View style={styles.flexBox}>
       <VotingPowerCard power={3} />
       <CarbonCraditCard credit={10} perc1={"+2"} perc2={"10%"} perc3={"5%"} />
@@ -71,9 +75,8 @@ const SubmitScreen = () => (
       <VotingItem index={2} title={"Personal Improvement"} />
       <VotingItem index={3} title={"Among All Participants"} />
       <VotingItem index={4} title={"Among Profile"} />
-      <VotingButtom />
+      <VotingButtom navigation={navigation} />
     </View>
-
   </Layout>
 );
 
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   screenLayout: {
-    flex:1,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     justifyContent: "space-evenly",

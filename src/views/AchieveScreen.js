@@ -7,6 +7,7 @@ import {
   Image,
 } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
+import HeaderText from "../components/HeaderText"
 
 const RightArrow = () => (
   <svg
@@ -135,6 +136,7 @@ const LocalItemList = () => (
 
 const AchieveScreen = () => (
   <Layout style={styles.screenLayout}>
+    <HeaderText text={"Reward"} />
     <RewardBar />
     <PickerBox />
     <LocalItemList />

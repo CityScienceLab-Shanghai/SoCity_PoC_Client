@@ -62,7 +62,6 @@ const Text_location = () => (
 const Display_map_info = () => (
   <>
     <Layout style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '100%', border: 'solid'}}>
-      
       <View style={{flex: 1}}>
         <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%',}}>
           <View style={{flex: 1}}>

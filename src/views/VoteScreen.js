@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, ScrollView, TouchableOpacity, View } from "react-native";
 import { Layout, Text } from "@ui-kitten/components";
-// import CarbonMap from "../components/CarbonMap";
+import HeaderText from "../components/HeaderText"
 
 const HistoryPercItem = ({ title, perc }) => (
   <View style={styles.historyItemBox}>
@@ -29,8 +29,12 @@ const DateText = ({ date, countdown }) => (
   </View>
 );
 
-const VotingButtom = () => (
-  <TouchableOpacity style={styles.voteButton} activeOpacity={0.8}>
+const VotingButtom = ({ navigation }) => (
+  <TouchableOpacity
+    style={styles.voteButton}
+    activeOpacity={0.8}
+    onPress={() => navigation.navigate("Submit")}
+  >
     <Text style={styles.voteButtonText}>Vote</Text>
   </TouchableOpacity>
 );
@@ -41,10 +45,11 @@ const PolicyHistory = () => (
   </View>
 );
 
-const VoteScreen = () => (
+const VoteScreen = ({ navigation }) => (
   <Layout style={styles.screenLayout}>
+    <HeaderText text={"Voting"} />
     <DateText date={"Apr 12"} countdown={0} />
-    <VotingButtom />
+    <VotingButtom navigation={navigation} />
     <PolicyHistory />
     <ScrollView style={{ width: "100%" }} bounces={true}>
       <HistoryItem
@@ -91,7 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   dateText: {
-    marginTop: 50,
+    marginTop: 20,
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "700",

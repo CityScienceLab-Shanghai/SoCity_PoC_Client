@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { StyleSheet, Image, View } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
+import HeaderText from "../components/HeaderText";
 
 const DATA = [
   {
@@ -37,6 +38,7 @@ const RedTriangle = () => (
 
 const EmissionScreen = () => (
   <Layout style={styles.screenLayout}>
+    <HeaderText text={"Performance"} />
     <View style={styles.Container}>
       <Image
         style={styles.VisCycle}
@@ -95,9 +97,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  valueBox:{
+  valueBox: {
     flexDirection: "row",
-    width:70,
+    width: 70,
   },
   title: {
     flex: 6,
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
 
   value: {
     flex: 1,
-    marginLeft:8,
+    marginLeft: 8,
     textAlign: "left",
     fontFamily: "Helvetica",
     fontStyle: "normal",
