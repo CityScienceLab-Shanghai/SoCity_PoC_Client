@@ -2,6 +2,9 @@ import React, { Fragment } from "react";
 import { StyleSheet, Image, View } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
 import HeaderText from "../components/HeaderText";
+import DonutChart from "../components/PieChart";
+
+
 
 const DATA = [
   {
@@ -36,14 +39,12 @@ const RedTriangle = () => (
   </svg>
 );
 
+
 const EmissionScreen = () => (
   <Layout style={styles.screenLayout}>
     <HeaderText text={"Performance"} />
     <View style={styles.Container}>
-      <Image
-        style={styles.VisCycle}
-        source={require("../components/performance.png")}
-      />
+      <DonutChart />
     </View>
 
     <View style={styles.Container}>
@@ -69,7 +70,7 @@ const EmissionScreen = () => (
 
 const styles = StyleSheet.create({
   Container: {
-    marginTop: 10,
+    // marginTop: 10,
     paddingHorizontal: 10,
   },
   VisCycle: {
