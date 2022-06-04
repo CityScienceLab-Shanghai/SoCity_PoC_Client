@@ -59,7 +59,7 @@ const VotingButtom = ({ navigation, sum }) => (
   <TouchableOpacity
     style={styles.submitButton}
     activeOpacity={0.8}
-    onPress={() => (sum ? navigation.navigate("Vote") : null)}
+    onPress={() => (sum == 100 ? navigation.navigate("Vote") : null)}
   >
     <Text style={styles.submitButtonText}>Submit</Text>
   </TouchableOpacity>
