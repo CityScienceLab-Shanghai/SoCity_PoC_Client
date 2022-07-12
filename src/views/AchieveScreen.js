@@ -11,36 +11,36 @@ import HeaderText from "../components/HeaderText"
 
 
 
-class LoginControl extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleLoginClick = this.handleLoginClick.bind(this);
-    this.handleLogoutClick = this.handleLogoutClick.bind(this);
-    this.state = {isLoggedIn: false};
-  }
+// class LoginControl extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.handleLoginClick = this.handleLoginClick.bind(this);
+//     this.handleLogoutClick = this.handleLogoutClick.bind(this);
+//     this.state = {isLoggedIn: false};
+//   }
 
-  handleLoginClick() {
-    this.setState({isLoggedIn: true});
-  }
+//   handleLoginClick() {
+//     this.setState({isLoggedIn: true});
+//   }
 
-  handleLogoutClick() {
-    this.setState({isLoggedIn: false});
-  }
+//   handleLogoutClick() {
+//     this.setState({isLoggedIn: false});
+//   }
 
-  render() {
-    const isLoggedIn = this.state.isLoggedIn;
-    let button;
-    if (isLoggedIn) {
-      button = <LogoutButton onClick={this.handleLogoutClick} />;
-    } 
-    return (
-      <div>
-        <Greeting isLoggedIn={isLoggedIn} />
-        {button}
-      </div>
-    );
-  }
-}
+//   render() {
+//     const isLoggedIn = this.state.isLoggedIn;
+//     let button;
+//     if (isLoggedIn) {
+//       button = <LogoutButton onClick={this.handleLogoutClick} />;
+//     } 
+//     return (
+//       <div>
+//         <Greeting isLoggedIn={isLoggedIn} />
+//         {button}
+//       </div>
+//     );
+//   }
+// }
 
 
 
@@ -113,7 +113,7 @@ const PickerItem = ({ selected, title }) =>
 
 
 const LocalItem = ({ name, distance, avgPrice, pic, number }) => (
-  <View>
+  <View style={{justifyContent : "space-between" , flexDirection: "row",}}>
     <View style={styles.rowBox}>
       <Image style={styles.localItemImg} source={pic} />
       <View>
@@ -122,16 +122,14 @@ const LocalItem = ({ name, distance, avgPrice, pic, number }) => (
           {distance} | {avgPrice} 
         </Text>
       </View>
-    <Divider />
-  <View>
-    <View style={styles.rowBox2}>
+    </View>
+    <View>
+      <View style={styles.rowBox}>
       <Text style={styles.localItemNumber}>{number}
       </Text>
+      </View>
     </View>
   </View>
-</View>
-<Divider />
-</View>
 );
 
 const LocalItemList = () => (
@@ -170,7 +168,6 @@ const LocalItemList = () => (
   
 );
 
-
 const LocalItemList2 = () => (
   <ScrollView style={{ width: "100%", flex: 1 }} bounces={true}>
     <LocalItem
@@ -193,24 +190,22 @@ const LocalItemList2 = () => (
 );
 
 
-
-
-
-
-
-
-
-const AchieveScreen = () => (
+const AchieveScreen = () => {
+  let historyList;
+  if (true){
+    historyList = <LocalItemList /> ;
+  }
+  else{
+    historyList = <LocalItemList2 /> ;
+  }
+  return (
   <Layout style={styles.screenLayout}>
     <HeaderText text={"Reward"} />
     <RewardBar />
-    <LocalItemList /> 
-    <LocalItemList2 />
+    {historyList }
   </Layout>
-);
+)};
 
-
- 
 
 
 const styles = StyleSheet.create({
@@ -227,10 +222,6 @@ const styles = StyleSheet.create({
   rowBox: {
     flexDirection: "row",
     justifyContent: "flex-start"
-  },
-  rowBox2: {
-    flexDirection: "row",
-    justifyContent: "flex-end"
   },
   rewardCard: {
     margin: 6.5,
@@ -368,7 +359,7 @@ const styles = StyleSheet.create({
     color: "#333333",
     marginTop:17,
     marginBottom:18,
-    marginLeft:230,
+    marginRight:30,
   },
 });
 
