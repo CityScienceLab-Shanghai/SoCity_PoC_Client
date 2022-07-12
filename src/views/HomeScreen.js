@@ -1,48 +1,114 @@
 import React from "react";
-import * as tf from "@tensorflow/tfjs";
-// import { bundleResourceIO,  } from "@tensorflow/tfjs-react-native";
 import { StyleSheet, ScrollView, TouchableOpacity, View } from "react-native";
-import { Layout, Text } from "@ui-kitten/components";
-import HeaderText from "../components/HeaderText";
+import { Layout, Text, Divider } from "@ui-kitten/components";
+import HeaderText from "../components/HeaderText"
+import { style } from "d3";
 
-const loadModel = async () => {
-  const randomArr = (len, min, max) =>
-    Array(len)
-      .fill(1)
-      .map((v) => Math.random() * (max - min) + min);
-
-  await tf.ready();
-
-  // let data = require("../../assets/Model/model.json");
-
-  const model = await tf
-    .loadLayersModel("https://socitymodel.netlify.app/model.json")
-    .catch((e) => {
-      console.log("[LOADING ERROR] info:", e);
-    });
-
-  console.log(tf.tensor2d([randomArr(8, 0, 1), randomArr(8, 0, 1)]).toString());
-  console.log(model.predict(tf.tensor2d([randomArr(8, 0, 1), randomArr(8, 0, 1)])).toString());
-  return model;
-};
-
-const DateText = ({ date, countdown }) => (
-  <View style={styles.flexBox}>
-    <Text style={styles.dateText}>{date}</Text>
-    <Text style={styles.countdownText}>{countdown} days</Text>
+const CountdownTimer = ({ value, legend }) => (
+  <View style={styles.countdownValueLegendBox}>
+    <View style={styles.countdownValueBox}>
+      <Text style={styles.countdownValueText}>{value}</Text>
+    </View>
+    <View style={styles.countdownLegendBox}>
+      <Text style={styles.countdownLegendText}>{legend}</Text>
+    </View>
   </View>
 );
 
-const VoteScreen = ({ navigation }) => {
-  const model = loadModel();
+const CountdownCard = ({ day, hour, minute, second }) => (
+  <View style={styles.countdownTimerBox}>
+    <CountdownTimer value={day} legend={"day"} />
+    <CountdownTimer value={hour} legend={"hour"} />
+    <CountdownTimer value={minute} legend={"minute"} />
+    <CountdownTimer value={second} legend={"second"} />
+  </View>
+);
 
-  return (
-    <Layout style={styles.screenLayout}>
-      <HeaderText text={"Voting"} />
-      <DateText date={"Apr 12"} countdown={0} />
-    </Layout>
-  );
-};
+const CountdownText = ({ instruction }) => (                      /*这里应该改成state转换*/
+  <View style={styles.countdownHeaderBox}>
+    <Text style={styles.countdownHeaderText}>{instruction}</Text>
+  </View>
+);
+
+const VotingButtom = ({ navigation }) => (
+  <TouchableOpacity
+    style={styles.voteButton}
+    activeOpacity={0.8}
+    onPress={() => navigation.navigate("Submit")}
+  >
+    <Text style={styles.voteButtonText}>Vote for Next Round</Text>
+  </TouchableOpacity>
+);
+
+const PolicyHistory = () => (
+  <View style={styles.historyHeaderBox}>
+    <Text style={styles.historyHeaderText}> History </Text>
+  </View>
+);
+
+const HistoryPercItem = ({ title, perc }) => (
+  <View style={styles.historyItemBox}>
+    <Text style={styles.historyInfoText}>{title}</Text>
+    <Text style={styles.historyInfoValue}>{perc}</Text>
+  </View>
+);
+
+const HistoryItem = ({ date, perc1, perc2, perc3, perc4, perc5, perc6 }) => (
+  <View>
+    <Divider style={{marginLeft: "7.5%", marginRight: "7.5%",}} />
+    <View style={styles.historyBox}>
+      <Text style={styles.historyDateText}>{date}</Text>
+      <View style={{ width: "64%" }}>
+        <HistoryPercItem title={"Passenger cars"} perc={perc1} />
+        <HistoryPercItem title={"Motorcycle"} perc={perc2} />
+        <HistoryPercItem title={"Bus"} perc={perc3} />
+        <HistoryPercItem title={"Heavy rail(metro)"} perc={perc4} />
+        <HistoryPercItem title={"Walking"} perc={perc5} />
+        <HistoryPercItem title={"Cycling"} perc={perc6} />
+      </View>
+    </View>
+  </View>
+);
+
+const VoteScreen = ({ navigation }) => (
+  <Layout style={styles.screenLayout}>
+    <HeaderText text={"Voting"} />
+    <CountdownText instruction={"The vote will be closed in"} />
+    <CountdownCard day={"01"} hour={"02"} minute={"03"} second={"04"} />
+    <VotingButtom navigation={navigation} />
+    <PolicyHistory />
+    <ScrollView style={{ width: "100%" }} bounces={true}>
+      <HistoryItem
+        date={"29 Mar"}
+        perc1={"10%"}
+        perc2={"50%"}
+        perc3={"20%"}
+        perc4={"30%"}
+      />
+      <HistoryItem
+        date={"15 Mar"}
+        perc1={"20%"}
+        perc2={"20%"}
+        perc3={"40%"}
+        perc4={"20%"}
+      />
+      <HistoryItem
+        date={"1 Mar"}
+        perc1={"10%"}
+        perc2={"50%"}
+        perc3={"20%"}
+        perc4={"30%"}
+      />
+      <HistoryItem
+        date={"18 Feb"}
+        perc1={"20%"}
+        perc2={"20%"}
+        perc3={"40%"}
+        perc4={"20%"}
+      />
+    </ScrollView>
+  </Layout>
+);
 
 const styles = StyleSheet.create({
   flexBox: {
@@ -55,57 +121,61 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  dateText: {
-    marginTop: 20,
+  countdownHeaderText:{
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "700",
-    fontSize: 32,
+    fontSize: 16,
     lineHeight: 56,
     display: "flex",
-    alignItems: "center",
-    textAlign: "center",
-    letterSpacing: "-0.022em",
-    color: "#000000",
+    alignItems: "left",
+    textAlign: "left",
+    color: "#000000"
   },
-  countdownText: {
+  countdownValueText: {
+    height: 60,
     fontFamily: "Helvetica",
-    fontStyle: "italic",
     fontWeight: "400",
     fontSize: 24,
-    // lineHeight: 56,
     display: "flex",
     alignItems: "center",
     textAlign: "center",
-    letterSpacing: "-0.022em",
-    color: "#5F646D",
+    color: "#000000",
+  },
+  countdownLegendText: {
+    height: 20,
+    fontFamily: "Helvetica",
+    fontWeight: "400",
+    fontSize: 12,
+    display: "flex",
+    alignItems: "center",
+    textAlign: "center",
+    color: "#000000",
   },
   voteButton: {
-    marginTop: 35,
-    width: 145,
-    height: 50,
+    marginTop: 42,
+    width: "75%",
+    height: 40,
     backgroundColor: "#000000",
     borderRadius: 30,
     alignItems: "center",
-    marginBottom: 50,
+    marginBottom: 40,
   },
   voteButtonText: {
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "700",
-    fontSize: 20,
-    lineHeight: 50,
+    fontSize: 14,
+    lineHeight: 40,
     textAlign: "center",
-    letterSpacing: "-0.022em",
     color: "#FFFFFF",
   },
   historyHeaderText: {
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "700",
-    fontSize: 20,
+    fontSize: 16,
     lineHeight: 56,
-    letterSpacing: "-0.022em",
     color: "#000000",
   },
   historyInfoText: {
@@ -125,32 +195,56 @@ const styles = StyleSheet.create({
     color: "#333333",
   },
   historyItemBox: {
-    paddingLeft: 30,
-    paddingRight: 25,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
   historyBox: {
-    marginTop: 10,
-    marginLeft: "7%",
-    width: "85%",
+    marginTop: 16,
+    marginLeft: "12.5%",
+    marginRight: "12.5%",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 30,
   },
   historyDateText: {
+    paddingTop: 4,
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "700",
-    fontSize: 18,
+    fontSize: 16,
     lineHeight: 20,
     color: "#333333",
   },
   historyHeaderBox: {
-    width: "90%",
+    width: "85%",
+  },
+  countdownHeaderBox: {
+    width: "75%",
+  },
+  countdownTimerBox: {
+    width: "75%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  countdownValueBox:{
+    height: 60,
+    width: 60,
+    backgroundColor: "#F1F1F1",
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  countdownLegendBox:{
+    marginTop: 8,
+    width: 60,
+    alignItems: "center",
+  },
+  countdownValueLegendBox: {
+    alignItems: "center",
+
   },
 });
 
