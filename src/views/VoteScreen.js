@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useState, useEffect} from "react";
 import { StyleSheet, ScrollView, TouchableOpacity, View } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
 import HeaderText from "../components/HeaderText"
@@ -70,45 +70,82 @@ const HistoryItem = ({ date, perc1, perc2, perc3, perc4, perc5, perc6 }) => (
   </View>
 );
 
-const VoteScreen = ({ navigation }) => (
-  <Layout style={styles.screenLayout}>
-    <HeaderText text={"Voting"} />
-    <CountdownText instruction={"The vote will be closed in"} />
-    <CountdownCard day={"01"} hour={"02"} minute={"03"} second={"04"} />
-    <VotingButtom navigation={navigation} />
-    <PolicyHistory />
-    <ScrollView style={{ width: "100%" }} bounces={true}>
-      <HistoryItem
+function GetTimeDiff(date) {
+  const [timeDiff, setTimeDiff] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      var nowtime = new Date().getTime();
+      var endtime = new Date(date).getTime();
+      setTimeDiff(endtime - nowtime);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+  return (timeDiff);
+};
+
+const countDownDay = (timeDiffSec) => {
+  let day = Math.floor((timeDiffSec / 1000 / 3600) / 24);
+  return day;
+};
+
+const countDownHour = (timeDiffSec) => {
+  let hour = Math.floor((timeDiffSec / 1000 / 3600) % 24);
+  return hour;
+};
+
+const countDownMinute = (timeDiffSec) => {
+  let minute = Math.floor((timeDiffSec / 1000 / 60) % 60);
+  return minute;
+};
+
+const countDownSecond = (timeDiffSec) => {
+  let second = Math.floor(timeDiffSec / 1000 % 60);
+  return second;
+};
+
+const VoteScreen = ({ navigation }) => {
+  const timeDifference = GetTimeDiff("2022/07/15");
+  return (
+    <Layout style={styles.screenLayout}>
+      <HeaderText text={"Voting"} />
+      <CountdownText instruction={"The vote will be closed in"} />
+      <CountdownCard day={countDownDay(timeDifference)} hour={countDownHour(timeDifference)} minute={countDownMinute(timeDifference)} second={countDownSecond(timeDifference)} />
+      <VotingButtom navigation={navigation} />
+      <PolicyHistory />
+      <ScrollView style={{ width: "100%" }} bounces={true}>
+        <HistoryItem
         date={"29 Mar"}
         perc1={"10%"}
         perc2={"50%"}
         perc3={"20%"}
         perc4={"30%"}
-      />
-      <HistoryItem
+        />
+        <HistoryItem
         date={"15 Mar"}
         perc1={"20%"}
         perc2={"20%"}
         perc3={"40%"}
         perc4={"20%"}
-      />
-      <HistoryItem
+        />
+        <HistoryItem
         date={"1 Mar"}
         perc1={"10%"}
         perc2={"50%"}
         perc3={"20%"}
         perc4={"30%"}
-      />
-      <HistoryItem
+        />
+        <HistoryItem
         date={"18 Feb"}
         perc1={"20%"}
         perc2={"20%"}
         perc3={"40%"}
         perc4={"20%"}
-      />
-    </ScrollView>
-  </Layout>
-);
+        />
+      </ScrollView>
+    </Layout>
+  );
+;}
+
 
 const styles = StyleSheet.create({
   flexBox: {
