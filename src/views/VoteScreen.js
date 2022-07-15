@@ -83,33 +83,18 @@ function GetTimeDiff(date) {
   return (timeDiff);
 };
 
-const countDownDay = (timeDiffSec) => {
-  let day = Math.floor((timeDiffSec / 1000 / 3600) / 24);
-  return day;
-};
-
-const countDownHour = (timeDiffSec) => {
-  let hour = Math.floor((timeDiffSec / 1000 / 3600) % 24);
-  return hour;
-};
-
-const countDownMinute = (timeDiffSec) => {
-  let minute = Math.floor((timeDiffSec / 1000 / 60) % 60);
-  return minute;
-};
-
-const countDownSecond = (timeDiffSec) => {
-  let second = Math.floor(timeDiffSec / 1000 % 60);
-  return second;
-};
-
 const VoteScreen = ({ navigation }) => {
-  const timeDifference = GetTimeDiff("2022/07/15");
+  const timeDifference = GetTimeDiff("2022/07/16");
   return (
     <Layout style={styles.screenLayout}>
       <HeaderText text={"Voting"} />
       <CountdownText instruction={"The vote will be closed in"} />
-      <CountdownCard day={countDownDay(timeDifference)} hour={countDownHour(timeDifference)} minute={countDownMinute(timeDifference)} second={countDownSecond(timeDifference)} />
+      <CountdownCard 
+      day={Math.floor((timeDifference / 1000 / 3600) / 24)} 
+      hour={Math.floor((timeDifference / 1000 / 3600) % 24)} 
+      minute={Math.floor((timeDifference / 1000 / 60) % 60)} 
+      second={Math.floor(timeDifference / 1000 % 60)} 
+      />
       <VotingButtom navigation={navigation} />
       <PolicyHistory />
       <ScrollView style={{ width: "100%" }} bounces={true}>
