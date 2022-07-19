@@ -7,58 +7,6 @@ import {
   Image,
 } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
-import HeaderText from "../components/HeaderText"
-
-
-
-// class LoginControl extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.handleLoginClick = this.handleLoginClick.bind(this);
-//     this.handleLogoutClick = this.handleLogoutClick.bind(this);
-//     this.state = {isLoggedIn: false};
-//   }
-
-//   handleLoginClick() {
-//     this.setState({isLoggedIn: true});
-//   }
-
-//   handleLogoutClick() {
-//     this.setState({isLoggedIn: false});
-//   }
-
-//   render() {
-//     const isLoggedIn = this.state.isLoggedIn;
-//     let button;
-//     if (isLoggedIn) {
-//       button = <LogoutButton onClick={this.handleLogoutClick} />;
-//     } 
-//     return (
-//       <div>
-//         <Greeting isLoggedIn={isLoggedIn} />
-//         {button}
-//       </div>
-//     );
-//   }
-// }
-
-
-
-
-const RewardBar = () => (
-  <ScrollView
-    horizontal={true}
-    showsHorizontalScrollIndicator={false}
-    style={{ width: "100%", height: 170, flexGrow: 0 }}
-  >
-    <View style={{ width: 25 }} />
-    <RewardCard selected={true} rewardTitle={"＄GCOIN"} count={10} />
-    <RewardCard selected={false} rewardTitle={"Carbon Credit"} count={4} />
-  </ScrollView>
-);
-
-
-
 
 const RightArrow = () => (
   <svg
@@ -96,8 +44,18 @@ const RewardCard = ({ selected, rewardTitle, count }) =>
     </View>
   );
 
-
-
+const RewardBar = () => (
+  <ScrollView
+    horizontal={true}
+    showsHorizontalScrollIndicator={false}
+    style={{ width: "100%", height: 170, flexGrow: 0 }}
+  >
+    <View style={{ width: 26 }} />
+    <RewardCard selected={true} rewardTitle={"Token"} count={10} />
+    <RewardCard selected={false} rewardTitle={"Coupon"} count={0} />
+    <RewardCard selected={false} rewardTitle={"NFT"} count={2} />
+  </ScrollView>
+);
 
 const PickerItem = ({ selected, title }) =>
   selected ? (
@@ -110,103 +68,78 @@ const PickerItem = ({ selected, title }) =>
     </View>
   );
 
+const PickerBox = () => (
+  <View style={styles.pickerBox}>
+    <PickerItem selected={true} title={"Popularity"} />
+    <PickerItem selected={false} title={"Distance"} />
+    <PickerItem selected={false} title={"Review"} />
+    <PickerItem selected={false} title={"Price"} />
+  </View>
+);
 
-
-const LocalItem = ({ name, distance, avgPrice, pic, number }) => (
-  <View style={{justifyContent : "space-between" , flexDirection: "row",}}>
+const LocalItem = ({ name, distance, avgPrice, pic }) => (
+  <View>
     <View style={styles.rowBox}>
       <Image style={styles.localItemImg} source={pic} />
       <View>
         <Text style={styles.localItemTitle}>{name}</Text>
         <Text style={styles.localItemDetail}>
-          {distance} | {avgPrice} 
+          {distance} | average {avgPrice} tokens
         </Text>
       </View>
     </View>
-    <View>
-      <View style={styles.rowBox}>
-      <Text style={styles.localItemNumber}>{number}
-      </Text>
-      </View>
-    </View>
+    <Divider />
   </View>
 );
 
 const LocalItemList = () => (
   <ScrollView style={{ width: "100%", flex: 1 }} bounces={true}>
     <LocalItem
-      name={"May,2022"}
-      distance={"3 transactions"}
-      avgPrice={"6 tokens"}
+      name={"Blue Botton Cafe"}
+      distance={"4km"}
+      avgPrice={5}
+      pic={require("../../assets/Sample/localIcon/1.png")}
     />
     <LocalItem
-      name={"coupon"}
-      distance={"detail"}
-      number={"+2"}
+      name={"Boston Library"}
+      distance={"5km"}
+      avgPrice={1}
+      pic={require("../../assets/Sample/localIcon/2.png")}
     />
     <LocalItem
-      name={"coupon"}
-      distance={"detail"}
-      number={"+2"}
+      name={"Blue Bike"}
+      distance={"2km"}
+      avgPrice={1}
+      pic={require("../../assets/Sample/localIcon/3.png")}
     />
     <LocalItem
-      name={"coupon"}
-      distance={"detail"}
-      number={"+2"}
+      name={"Blue Botton Cafe"}
+      distance={"4km"}
+      avgPrice={5}
+      pic={require("../../assets/Sample/localIcon/1.png")}
     />
     <LocalItem
-      name={"coupon"}
-      distance={"detail"}
-      number={"+2"}
+      name={"Boston Library"}
+      distance={"5km"}
+      avgPrice={1}
+      pic={require("../../assets/Sample/localIcon/2.png")}
     />
     <LocalItem
-      name={"coupon"}
-      distance={"detail"}
-      number={"+2"}
+      name={"Blue Bike"}
+      distance={"2km"}
+      avgPrice={1}
+      pic={require("../../assets/Sample/localIcon/3.png")}
     />
   </ScrollView>
-  
 );
 
-const LocalItemList2 = () => (
-  <ScrollView style={{ width: "100%", flex: 1 }} bounces={true}>
-    <LocalItem
-      name={"June,2022"}
-      distance={"2 rounds"}
-      avgPrice={"1 Carbon Credit"}
-    />
-    <LocalItem
-      name={"June 23"}
-      distance={"Carbon Emission:10"}
-      number={"+2"}
-    />
-    <LocalItem
-      name={"June 16"}
-      distance={"Carbon Emission:8"}
-      number={"+2"}
-    />
-  </ScrollView>
-  
-);
-
-
-const AchieveScreen = () => {
-  let historyList;
-  if (true){
-    historyList = <LocalItemList /> ;
-  }
-  else{
-    historyList = <LocalItemList2 /> ;
-  }
-  return (
+const AchieveScreen = () => (
   <Layout style={styles.screenLayout}>
-    <HeaderText text={"Reward"} />
     <RewardBar />
-    {historyList }
+    <PickerBox />
+    <LocalItemList />
   </Layout>
-)};
-
-
+);
 
 const styles = StyleSheet.create({
   flexBox: {
@@ -221,11 +154,10 @@ const styles = StyleSheet.create({
   },
   rowBox: {
     flexDirection: "row",
-    justifyContent: "flex-start"
   },
   rewardCard: {
     margin: 6.5,
-    width: 156,
+    width: 133,
     height: 156,
     backgroundColor: "#F1F1F1",
     shadowOffset: {
@@ -242,7 +174,7 @@ const styles = StyleSheet.create({
   },
   rewardCardEmpty: {
     margin: 6.5,
-    width: 156,
+    width: 133,
     height: 156,
     borderWidth: 1,
     borderColor: "#DADADA",
@@ -277,7 +209,18 @@ const styles = StyleSheet.create({
     right: 12,
     bottom: 12,
   },
-
+  pickerBox: {
+    marginTop:35,
+    marginBottom:10,
+    flexDirection: "row",
+    backgroundColor: "#FBFBFB",
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    borderBottomRightRadius: 50,
+    borderBottomLeftRadius: 50,
+    width: 320,
+    height: 40,
+  },
   pickerItem: {
     width: 80,
     height: 40,
@@ -319,6 +262,15 @@ const styles = StyleSheet.create({
     letterSpacing: "-0.022em",
     color: "#5F646D",
   },
+  localItemImg: {
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    marginLeft: 62,
+    marginBottom: 24,
+    marginRight: 37,
+    marginTop: 24,
+  },
   localItemDetail: {
     fontFamily: "Helvetica",
     fontStyle: "normal",
@@ -329,37 +281,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     letterSpacing: "-0.022em",
     color: "rgba(51, 51, 51, 0.7)",
-    marginTop:15,
-    marginBottom:20,
-    marginLeft:20,
+    marginTop:10,
   },
   localItemTitle: {
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "700",
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 14,
     display: "flex",
     alignItems: "center",
     letterSpacing: "-0.022em",
     color: "#333333",
-    marginTop:20,
-    marginLeft:20,
-  },
-  localItemNumber: {
-    alignSelf: "flex-end",
-    fontFamily: "Helvetica",
-    fontStyle: "normal",
-    fontWeight: "700",
-    fontSize: 16,
-    lineHeight: 14,
-    display: "flex",
-    alignItems: "center",
-    letterSpacing: "-0.022em",
-    color: "#333333",
-    marginTop:17,
-    marginBottom:18,
-    marginRight:30,
+    marginTop:35,
   },
 });
 
