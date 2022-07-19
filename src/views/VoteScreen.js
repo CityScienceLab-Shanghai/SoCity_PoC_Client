@@ -24,21 +24,47 @@ const CountdownCard = ({ day, hour, minute, second }) => (
   </View>
 );
 
-const CountdownText = ({ instruction }) => (                      /*这里应该改成state转换*/
+const CountdownText = ({ instruction }) => (                   
   <View style={styles.countdownHeaderBox}>
     <Text style={styles.countdownHeaderText}>{instruction}</Text>
   </View>
 );
 
-const VotingButtom = ({ navigation }) => (
+function getInstructionMessage(voteStatus){    
+  if (voteStatus === "normalRound") {
+    return <CountdownText instruction={"Next date: Tuesday July 20"} />;          //日期要改成变量
+  } else if (voteStatus === "toVote") {
+    return <CountdownText instruction={"The vote will be closed in"} />; 
+  } else if (voteStatus === "afterVote") {
+    return <CountdownText instruction={"The result will be released in"} />; 
+  }
+};
+
+const VotingButton = ({ navigation, buttonText }) => (
   <TouchableOpacity
     style={styles.voteButton}
     activeOpacity={0.8}
-    onPress={() => navigation.navigate("Submit")}
+    onPress={() => navigation.navigate("Submit")}   //如何使跳转目标也成为变量？pop up live result
   >
-    <Text style={styles.voteButtonText}>Vote for Next Round</Text>
+    <Text style={styles.voteButtonText}>{buttonText}</Text>
   </TouchableOpacity>
 );
+
+const VotingButtonInactive = () => (
+  <View style={styles.voteButtonInactive}>
+      <Text style={styles.voteButtonText}>Wait for the Day</Text>
+  </View>
+);
+
+function getVotingButton( navigation, voteStatus ){
+  if (voteStatus === "normalRound") {
+    return <VotingButtonInactive />
+  } else if (voteStatus === "toVote") {
+    return <VotingButton navigation={navigation} buttonText={"Vote"} />
+  } else if (voteStatus === "afterVote") {
+    return <VotingButton navigation={navigation} buttonText={"Check Live Result"} />
+  };
+};
 
 const PolicyHistory = () => (
   <View style={styles.historyHeaderBox}>
@@ -83,19 +109,21 @@ function GetTimeDiff(date) {
   return (timeDiff);
 };
 
-const VoteScreen = ({ navigation }) => {
-  const timeDifference = GetTimeDiff("2022/07/16");
+const VoteScreen = ({ navigation }) => {                
+  const timeDifference = GetTimeDiff("2022/07/20");
+  let buttonInUse = getVotingButton(navigation, "normalRound");        //条件渲染
+  let instructionMessage = getInstructionMessage("normalRound")         //条件渲染
   return (
     <Layout style={styles.screenLayout}>
       <HeaderText text={"Voting"} />
-      <CountdownText instruction={"The vote will be closed in"} />
+      {instructionMessage}  
       <CountdownCard 
       day={Math.floor((timeDifference / 1000 / 3600) / 24)} 
       hour={Math.floor((timeDifference / 1000 / 3600) % 24)} 
       minute={Math.floor((timeDifference / 1000 / 60) % 60)} 
       second={Math.floor(timeDifference / 1000 % 60)} 
       />
-      <VotingButtom navigation={navigation} />
+      {buttonInUse}
       <PolicyHistory />
       <ScrollView style={{ width: "100%" }} bounces={true}>
         <HistoryItem
@@ -179,6 +207,15 @@ const styles = StyleSheet.create({
     width: "75%",
     height: 40,
     backgroundColor: "#000000",
+    borderRadius: 30,
+    alignItems: "center",
+    marginBottom: 40,
+  },
+  voteButtonInactive: {
+    marginTop: 42,
+    width: "75%",
+    height: 40,
+    backgroundColor: "#979797",
     borderRadius: 30,
     alignItems: "center",
     marginBottom: 40,
