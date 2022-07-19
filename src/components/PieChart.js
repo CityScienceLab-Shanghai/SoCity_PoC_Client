@@ -16,11 +16,13 @@ class DonutChart extends Component {
 
     drawChart(){
         const data = {"walk": 0.20, "bike": 0.25, "drive": 0.55};
+        const carbon = 182;
 
         // build SVG
         const width = 375;
         const height = 319;
         const radius = 100;
+
              
         // append the svg object to ref
         const svg = d3.select(this.myref.current)
@@ -41,7 +43,7 @@ class DonutChart extends Component {
         
         // The arc for the donut chart
         const arc = d3.arc()
-          .innerRadius(radius * 0.5) 
+          .innerRadius(radius * 0.65) 
           .outerRadius(radius * 0.85)
         
         // polyline positioning
@@ -80,6 +82,23 @@ class DonutChart extends Component {
               posC[0] = radius * 1.15 * (midangle < Math.PI ? 1 : -1);
               return [posA, posB, posC]
             })
+          // add a value centering this chart
+          svg.append("svg:text")
+            .attr("dy", ".15em")
+            .attr("text-anchor", "middle")
+            .attr("style","font-family:Helvetica")
+            .attr("font-size","36")
+            .attr("fill","#000000")
+            .text(carbon)
+
+          svg.append("svg:text")
+            .attr("dy", "1.75em")
+            .attr("text-anchor", "middle")
+            .attr("style","font-family:Helvetica")
+            .attr("font-size","14")
+            .attr("fill","#606060")
+            .text('g/km')
+
         
         // Add the labels
         svg
