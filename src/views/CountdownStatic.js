@@ -1,9 +1,7 @@
-import {React, useState, useEffect} from "react";
+import React from "react";
 import { StyleSheet, ScrollView, TouchableOpacity, View } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
 import HeaderText from "../components/HeaderText"
-// import CountDownTimer from "../components/CountDownTimer"
-import { render } from "react-dom";
 
 const CountdownTimer = ({ value, legend }) => (
   <View style={styles.countdownValueLegendBox}>
@@ -41,51 +39,52 @@ const VotingButtom = ({ navigation }) => (
   </TouchableOpacity>
 );
 
+var timeId;
 
-function GetTimeDiff(date) {
-  const [timeDiff, setTimeDiff] = useState(0);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      var nowtime = new Date().getTime();
-      var endtime = new Date(date).getTime();
-      setTimeDiff(endtime - nowtime);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-  return (timeDiff);
+function timeDiff(b) {
+  function countDown () {
+    var regEx = new RegExp("\\-","gi");
+    var validDateStr=b.replace(regEx,"/");
+    var milliseconds=Date.parse(validDateStr);
+    return milliseconds;
+  }
+  var a = countDown(b)
+  var sys_second = new Date(a).getTime() - new Date().getTime();
+  return sys_second;
 }
 
-const countDownDay = (timeDiffSec) => {
-  let day = Math.floor((timeDiffSec / 1000 / 3600) / 24);
+const countDownDay = (date) => {
+  var timeDifference = timeDiff(date);
+  let day = Math.floor((timeDifference / 1000 / 3600) / 24);
   return day;
 }
 
-const countDownHour = (timeDiffSec) => {
-  let hour = Math.floor((timeDiffSec / 1000 / 3600) % 24);
+const countDownHour = (date) => {
+  var timeDifference = timeDiff(date);
+  let hour = Math.floor((timeDifference / 1000 / 3600) % 24);
   return hour;
 }
 
-const countDownMinute = (timeDiffSec) => {
-  let minute = Math.floor((timeDiffSec / 1000 / 60) % 60);
+const countDownMinute = (date) => {
+  var timeDifference = timeDiff(date);
+  let minute = Math.floor((timeDifference / 1000 / 60) % 60);
   return minute;
 }
 
-const countDownSecond = (timeDiffSec) => {
-  let second = Math.floor(timeDiffSec / 1000 % 60);
+const countDownSecond = (date) => {
+  var timeDifference = timeDiff(date);
+  let second = Math.floor(timeDifference / 1000 % 60);
   return second;
 }
   
-const VoteScreen = ({ navigation }) => {
-  const timeDifference = GetTimeDiff("2022/07/15");
-  return(
-    <Layout style={styles.screenLayout}>
-      <HeaderText text={"Voting"} />
-      <CountdownText instruction={"The vote will be closed in"} />
-      <CountdownCard day={countDownDay(timeDifference)} hour={countDownHour(timeDifference)} minute={countDownMinute(timeDifference)} second={countDownSecond(timeDifference)} />
-      <VotingButtom navigation={navigation} />
-    </Layout>
-  );
-};
+const VoteScreen = ({ navigation }) => (
+  <Layout style={styles.screenLayout}>
+    <HeaderText text={"Voting"} />
+    <CountdownText instruction={"The vote will be closed in"} />
+    <CountdownCard day={countDownDay("2022-07-14")} hour={countDownHour("2022-07-14")} minute={countDownMinute("2022-07-14")} second={countDownSecond("2022-07-14")} />
+    <VotingButtom navigation={navigation} />
+  </Layout>
+);
 
 
 const styles = StyleSheet.create({
