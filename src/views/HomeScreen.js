@@ -1,88 +1,93 @@
-import {React, useState, useEffect} from "react";
-import { StyleSheet, ScrollView, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, TextInput, TouchableOpacity, View, Image } from "react-native";
 import { Layout, Text, Divider } from "@ui-kitten/components";
 import HeaderText from "../components/HeaderText"
-// import CountDownTimer from "../components/CountDownTimer"
-import { render } from "react-dom";
 
-const CountdownTimer = ({ value, legend }) => (
-  <View style={styles.countdownValueLegendBox}>
-    <View style={styles.countdownValueBox}>
-      <Text style={styles.countdownValueText}>{value}</Text>
-    </View>
-    <View style={styles.countdownLegendBox}>
-      <Text style={styles.countdownLegendText}>{legend}</Text>
-    </View>
-  </View>
-);
 
-const CountdownCard = ({ day, hour, minute, second }) => (
-  <View style={styles.countdownTimerBox}>
-    <CountdownTimer value={day} legend={"day"} />
-    <CountdownTimer value={hour} legend={"hour"} />
-    <CountdownTimer value={minute} legend={"minute"} />
-    <CountdownTimer value={second} legend={"second"} />
-  </View>
-);
-
-const CountdownText = ({ instruction }) => (                    
-  <View style={styles.countdownHeaderBox}>
-    <Text style={styles.countdownHeaderText}>{instruction}</Text>
-  </View>
-);
-
-const VotingButtom = ({ navigation }) => (
+const SubmitFeedbackButton = ({navigation}) => (
   <TouchableOpacity
-    style={styles.voteButton}
+    style={styles.feedbackButton}
     activeOpacity={0.8}
-    onPress={() => navigation.navigate("Submit")}
+    onPress={() => navigation.navigate("Emission")}  //navigate to 'afterFeedback'
   >
-    <Text style={styles.voteButtonText}>Vote for Next Round</Text>
+    <Text style={styles.feedbackButtonText}>Let us Know</Text>
   </TouchableOpacity>
 );
 
+const LogoutButton = ({navigation}) => (
+  <TouchableOpacity
+    style={styles.logoutButton}
+    activeOpacity={0.8}
+    onPress={() => navigation.navigate("Emission")}  //navigate to logout
+  >
+    <Text style={styles.logoutButtonText}>Log out</Text>
+  </TouchableOpacity>
+);
 
-function GetTimeDiff(date) {
-  const [timeDiff, setTimeDiff] = useState(0);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      var nowtime = new Date().getTime();
-      var endtime = new Date(date).getTime();
-      setTimeDiff(endtime - nowtime);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-  return (timeDiff);
-}
-
-const countDownDay = (timeDiffSec) => {
-  let day = Math.floor((timeDiffSec / 1000 / 3600) / 24);
-  return day;
-}
-
-const countDownHour = (timeDiffSec) => {
-  let hour = Math.floor((timeDiffSec / 1000 / 3600) % 24);
-  return hour;
-}
-
-const countDownMinute = (timeDiffSec) => {
-  let minute = Math.floor((timeDiffSec / 1000 / 60) % 60);
-  return minute;
-}
-
-const countDownSecond = (timeDiffSec) => {
-  let second = Math.floor(timeDiffSec / 1000 % 60);
-  return second;
-}
+const HeaderCard = () => (
+  <View style={styles.headerBox}>
+    <View style={styles.headerItemBox}>
+      <HeaderText text={"  "} />
+    </View>
+    <View style={styles.headerItemBox}>
+      <HeaderText text={" Home "} />
+    </View>
+    <View style={styles.headerItemBox}>
+      <LogoutButton />
+    </View>
+  </View>
+);
   
-const VoteScreen = ({ navigation }) => {
-  const timeDifference = GetTimeDiff("2022/07/15");
-  return(
+const ProfileList = () => (
+  <ProfileItem
+    username={"charrrr"}
+    date={"22/08/01"}
+    pic={require("../../assets/Sample/localIcon/1.png")}
+  />
+);
+
+const ProfileItem = ({ username, date , pic }) => (
+  <View style={styles.profileBox}>
+    <Image style={styles.profileImg} source={pic} />
+    <Text style={styles.usernameText}>@{username}</Text>
+    <Text style={styles.userJoinDate}>
+      Join Green Commute since {date}
+    </Text>
+  </View>
+);
+
+const MultilineTextInput = (props) => {
+  return (
+    <TextInput
+      {...props}
+      editable
+      maxLength={40}
+    />
+  )
+};
+
+const FeedbackItem = () => {
+  const [value, onChangeText] = React.useState();
+  return (
+    <View style={styles.feedbackBox}>   
+      <MultilineTextInput
+        style={styles.feedbackInputText}
+        multiline
+        onChangeText={text => onChangeText(text)}
+        value={value}
+        placeholder={"Please leave us a message here if you have anything to say to us!"}
+      />
+    </View>
+  );
+};
+
+const HomeScreen = ({ navigation }) => {     
+  return (
     <Layout style={styles.screenLayout}>
-      <HeaderText text={"Voting"} />
-      <CountdownText instruction={"The vote will be closed in"} />
-      <CountdownCard day={countDownDay(timeDifference)} hour={countDownHour(timeDifference)} minute={countDownMinute(timeDifference)} second={countDownSecond(timeDifference)} />
-      <VotingButtom navigation={navigation} />
+      <HeaderCard/>
+      <ProfileList />
+      <FeedbackItem />
+      <SubmitFeedbackButton navigation={navigation}/>
     </Layout>
   );
 };
@@ -99,39 +104,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  countdownHeaderText:{
-    fontFamily: "Helvetica",
-    fontStyle: "normal",
-    fontWeight: "700",
-    fontSize: 16,
-    lineHeight: 56,
-    display: "flex",
-    alignItems: "left",
-    textAlign: "left",
-    color: "#000000"
+  headerBox: {
+    width: 330,
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  countdownValueText: {
-    height: 60,
-    fontFamily: "Helvetica",
-    fontWeight: "400",
-    fontSize: 24,
-    display: "flex",
+  headerItemBox:{
+    width: 110,
     alignItems: "center",
-    textAlign: "center",
-    color: "#000000",
   },
-  countdownLegendText: {
-    height: 20,
-    fontFamily: "Helvetica",
-    fontWeight: "400",
-    fontSize: 12,
-    display: "flex",
-    alignItems: "center",
-    textAlign: "center",
-    color: "#000000",
-  },
-  voteButton: {
-    marginTop: 42,
+  feedbackButton: {
     width: "75%",
     height: 40,
     backgroundColor: "#000000",
@@ -139,7 +122,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 40,
   },
-  voteButtonText: {
+  feedbackButtonText: {
     fontFamily: "Helvetica",
     fontStyle: "normal",
     fontWeight: "700",
@@ -148,31 +131,90 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FFFFFF",
   },
-  countdownHeaderBox: {
-    width: "75%",
+  logoutButton: {
+    width: 70,
+    height: 40,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    alignItems: "right",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowRadius: 50,
+    shadowColor: "rgba(18, 28, 42, 0.08)",
+    shadowOpacity: 1,
   },
-  countdownTimerBox: {
-    width: "75%",
+  logoutButtonText: {
+    fontFamily: "Helvetica",
+    fontStyle: "normal",
+    fontWeight: "700",
+    fontSize: 14,
+    lineHeight: 40,
+    textAlign: "center",
+    color: "#000000",
+  },
+  userJoinDate:{
+    fontFamily: "Helvetica",
+    fontStyle: "normal",
+    fontWeight: "400",
+    fontSize: 12,
+    lineHeight: 24,
+    color: "#707070",
+    alignItems: "center",
+  },
+  usernameText:{
+    fontFamily: "Helvetica",
+    fontStyle: "normal",
+    fontWeight: "400",
+    fontSize: 16,
+    lineHeight: 24,
+    color: "#000000",
+    alignItems: "center",
+  },
+  profileImg: {
+    width: 90,
+    height: 90,
+    borderRadius: 100,
+    marginBottom: 16,
+    marginTop: 24,
+    alignItems: "center",
+  },
+  profileBox: {
+    width: "85%",
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  countdownValueBox:{
-    height: 60,
-    width: 60,
-    backgroundColor: "#F1F1F1",
-    borderRadius: 10,
+    justifyContent: "space-between",
     alignItems: "center",
-  },
-  countdownLegendBox:{
     marginTop: 8,
-    width: 60,
-    alignItems: "center",
+    marginBottom: 24,
   },
-  countdownValueLegendBox: {
+  feedbackBox: {
+    width: "85%",
+    height: 320,
+    display: "flex",
     alignItems: "center",
-
+    marginBottom: 24,
+    shadowOffset: {
+      width: 2,
+      height: 4,
+    },
+    shadowRadius: 10,
+    shadowColor: "rgba(0, 0, 0, 0.1)",
+    shadowOpacity: 1,
+    justifyContent: 'center'
+  },
+  feedbackInputText: {
+    width: "90%",
+    height: "90%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    textAlign: "left",
+    fontFamily: "Helvetica",
+    fontStyle: "normal",
+    fontWeight: "400",
+    fontSize: 14,
+    color:"#000000"
   },
 });
 
-export default VoteScreen;
+export default HomeScreen;
